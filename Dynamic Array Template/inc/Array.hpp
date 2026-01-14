@@ -6,6 +6,43 @@
 template<typename T>
 struct Array
 {
+	struct Iterator
+	{
+		Iterator(T* ptr)
+			: m_ptr{ ptr }
+		{}
+
+		T& operator*() const
+		{
+			return* m_ptr;
+		}
+
+		Iterator& operator++()
+		{
+			++m_ptr;
+			return *this;
+		}
+
+		Iterator& operator--()
+		{
+			--m_ptr;
+			return *this;
+		}
+
+		bool operator==(const Iterator& rhs) const
+		{
+			return m_ptr == rhs.m_ptr;
+		}
+
+		bool operator!=(const Iterator& rhs) const
+		{
+			return !(m_ptr == rhs.m_ptr);
+		}
+
+	private:
+		T* m_ptr;
+	};
+
 	Array();
 	Array(size_t size, const T& value = T());
 
@@ -34,6 +71,16 @@ struct Array
 
 	template<typename Self>
 	auto&& operator[](this Self&& self, size_t i);
+
+	Iterator begin()
+	{
+		return Iterator(&m_data[0]);
+	}
+
+	Iterator end()
+	{
+		return Iterator(&m_data[m_size]);
+	}
 
 private:
 	T* m_data = nullptr;

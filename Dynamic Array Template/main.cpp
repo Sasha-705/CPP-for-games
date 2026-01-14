@@ -2,6 +2,7 @@
 
 #include <Array.hpp>
 #include <cassert>
+#include <numeric>
 
 int main()
 {
@@ -72,5 +73,57 @@ int main()
 
 	assert(k.size() == 0);
 
+	//begin() and end()
+	{
+		Array<int> arr;
+		arr.add(10);
+		arr.add(20);
+
+		auto it = arr.begin();
+
+		assert(*it == 10);
+	}
+	{
+		Array<int> arr;
+		arr.add(1);
+		arr.add(2);
+		arr.add(3);
+
+		auto it = arr.begin();
+		auto end = arr.end();
+
+		int count = 0;
+		for (; it != end; ++it)
+		{
+			++count;
+		}
+
+		assert(count == 3);
+	}
+	{
+		Array<int> arr;
+		arr.add(5);
+		arr.add(10);
+		arr.add(15);
+
+		int sum = 0;
+		for (int value : arr)
+		{
+			sum += value;
+		}
+
+		assert(sum == 30);
+	}
+	{
+		Array<int> arr;
+		arr.add(1);
+		arr.add(2);
+		arr.add(3);
+		arr.add(4);
+
+		int sum = std::accumulate(arr.begin(), arr.end(), 0);
+
+		assert(sum == 10);
+	}
 	return 0;
 }
